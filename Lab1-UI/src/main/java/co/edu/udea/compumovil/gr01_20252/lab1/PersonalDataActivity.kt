@@ -1,6 +1,7 @@
 package co.edu.udea.compumovil.gr01_20252.lab1
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -40,7 +41,7 @@ fun PersonalDataScreen() {
     var gradoEscolaridad by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
 
-    // Opciones para los campos
+
     val opcionesSexo = listOf("Masculino", "Femenino", "Otro")
     val opcionesEscolaridad = listOf(
         "Primaria",
@@ -82,7 +83,7 @@ fun PersonalDataScreen() {
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
-        // Campo Nombres (Obligatorio)
+
         OutlinedTextField(
             value = nombres,
             onValueChange = { nombres = it },
@@ -96,7 +97,7 @@ fun PersonalDataScreen() {
             singleLine = true
         )
 
-        // Campo Apellidos (Obligatorio)
+
         OutlinedTextField(
             value = apellidos,
             onValueChange = { apellidos = it },
@@ -110,7 +111,7 @@ fun PersonalDataScreen() {
             singleLine = true
         )
 
-        // Sexo (RadioButtons)
+
         Text(
             text = "Sexo",
             fontSize = 16.sp,
@@ -155,7 +156,7 @@ fun PersonalDataScreen() {
             Text(text = fechaNacimiento)
         }
 
-        // Grado de escolaridad
+
         Text(
             text = "Grado de escolaridad",
             fontSize = 16.sp,
@@ -201,7 +202,7 @@ fun PersonalDataScreen() {
 
         Button(
             onClick = {
-                // Validar campos obligatorios
+
                 if (nombres.isBlank()) {
 
                     return@Button
@@ -215,11 +216,13 @@ fun PersonalDataScreen() {
                     return@Button
                 }
 
-
+                // Navegar a ContactDataActivity
+                val intent = Intent(context, ContactDataActivity::class.java)
+                context.startActivity(intent)
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Guardar Datos")
+            Text("Siguiente")
         }
     }
 }
@@ -229,3 +232,4 @@ fun PersonalDataScreen() {
 fun PersonalDataPreview() {
     PersonalDataScreen()
 }
+
