@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -37,22 +38,26 @@ fun PersonalDataScreen() {
     var nombres by remember { mutableStateOf("") }
     var apellidos by remember { mutableStateOf("") }
     var sexoSeleccionado by remember { mutableStateOf("") }
-    var fechaNacimiento by remember { mutableStateOf("Seleccionar fecha") }
+    var fechaNacimiento by remember { mutableStateOf("") }
+    fechaNacimiento = stringResource(R.string.select_date)
     var gradoEscolaridad by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
 
 
-    val opcionesSexo = listOf("Masculino", "Femenino", "Otro")
+    val opcionesSexo = listOf(stringResource(R.string.sex_male),
+        stringResource(R.string.sex_female),
+        stringResource(R.string.sex_other))
+
     val opcionesEscolaridad = listOf(
-        "Primaria",
-        "Secundaria",
-        "Bachillerato",
-        "Técnico",
-        "Tecnológico",
-        "Universitario",
-        "Especialización",
-        "Maestría",
-        "Doctorado"
+        stringResource(R.string.education_primary),
+        stringResource(R.string.education_secondary),
+        stringResource(R.string.education_high_school),
+        stringResource(R.string.education_technical),
+        stringResource(R.string.education_technological),
+        stringResource(R.string.education_university),
+        stringResource(R.string.education_specialization),
+        stringResource(R.string.education_masters),
+        stringResource(R.string.education_doctorate)
     )
 
     val context = LocalContext.current
@@ -77,17 +82,17 @@ fun PersonalDataScreen() {
     ) {
 
         Text(
-            text = "Datos Personales",
+            text = stringResource(R.string.personal_data_title),
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 16.dp)
+            modifier = Modifier.padding(bottom = 1.dp , top = 20.dp)
         )
 
 
         OutlinedTextField(
             value = nombres,
             onValueChange = { nombres = it },
-            label = { Text("*Nombres") },
+            label = { Text(stringResource(R.string.names_label)) },
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
@@ -101,7 +106,7 @@ fun PersonalDataScreen() {
         OutlinedTextField(
             value = apellidos,
             onValueChange = { apellidos = it },
-            label = { Text("*Apellidos") },
+            label = { Text(stringResource(R.string.surnames_label)) },
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Text,
@@ -113,7 +118,7 @@ fun PersonalDataScreen() {
 
 
         Text(
-            text = "Sexo",
+            text = stringResource(R.string.sex_label),
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium
         )
@@ -144,7 +149,7 @@ fun PersonalDataScreen() {
 
 
         Text(
-            text = "*Fecha de nacimiento",
+            text = stringResource(R.string.birth_date_label),
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium
         )
@@ -158,7 +163,7 @@ fun PersonalDataScreen() {
 
 
         Text(
-            text = "Grado de escolaridad",
+            text = stringResource(R.string.select_education),
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium
         )
@@ -172,7 +177,7 @@ fun PersonalDataScreen() {
                 value = gradoEscolaridad,
                 onValueChange = {},
                 readOnly = true,
-                label = { Text("Seleccionar grado") },
+                label = { Text(stringResource(R.string.education_level_label)) },
                 trailingIcon = {
                     ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
                 },
@@ -222,7 +227,7 @@ fun PersonalDataScreen() {
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Siguiente")
+            Text(text = stringResource(R.string.next_button))
         }
     }
 }

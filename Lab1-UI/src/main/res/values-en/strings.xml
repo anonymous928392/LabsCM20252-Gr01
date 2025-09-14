@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Personal Data</string>
+
+    <!-- PersonalDataActivity -->
+    <string name="personal_data_title">Personal Data</string>
+    <string name="names_label">*First Names</string>
+    <string name="surnames_label">*Last Names</string>
+    <string name="sex_label">Sex</string>
+    <string name="sex_male">Male</string>
+    <string name="sex_female">Female</string>
+    <string name="sex_other">Other</string>
+    <string name="birth_date_label">*Date of Birth</string>
+    <string name="select_date">Select date</string>
+    <string name="education_level_label">Education Level</string>
+    <string name="select_education">Select level</string>
+
+    <!-- Education levels -->
+    <string name="education_primary">Primary</string>
+    <string name="education_secondary">Secondary</string>
+    <string name="education_high_school">High School</string>
+    <string name="education_technical">Technical</string>
+    <string name="education_technological">Technological</string>
+    <string name="education_university">University</string>
+    <string name="education_specialization">Specialization</string>
+    <string name="education_masters">Master\'s Degree</string>
+    <string name="education_doctorate">Doctorate</string>
+
+    <!-- ContactDataActivity -->
+    <string name="contact_data_title">Contact Data</string>
+    <string name="phone_label">*Phone</string>
+    <string name="address_label">Address</string>
+    <string name="email_label">*Email</string>
+    <string name="country_label">*Country</string>
+    <string name="city_label">City</string>
+    <string name="select_country">Select country</string>
+    <string name="select_city">Select city</string>
+
+    <!-- Countries -->
+    <string name="country_colombia">Colombia</string>
+
+
+    <!-- Common -->
+    <string name="next_button">Next</string>
+    <string name="logcat_note">Note: Data is shown in Logcat when you press \'Next\'</string>
+
+    <!-- Validation messages -->
+    <string name="required_field_error">This field is required</string>
+    <string name="validation_error">Please complete all required fields</string>
+</resources>
