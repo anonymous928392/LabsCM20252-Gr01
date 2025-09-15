@@ -19,6 +19,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -51,8 +52,28 @@ fun ContactDataScreen() {
 
 
     val paisesLatam = listOf(
-        "Colombia"
-    )
+        stringResource(R.string.country_colombia),
+        stringResource(R.string.country_argentina),
+        stringResource(R.string.country_chile),
+        stringResource(R.string.country_mexico),
+        stringResource(R.string.country_peru),
+        stringResource(R.string.country_ecuador),
+        stringResource(R.string.country_bolivia),
+        stringResource(R.string.country_paraguay),
+        stringResource(R.string.country_uruguay),
+        stringResource(R.string.country_brasil),
+        stringResource(R.string.country_venezuela),
+        stringResource(R.string.country_costa_rica),
+        stringResource(R.string.country_panama),
+        stringResource(R.string.country_el_salvador),
+        stringResource(R.string.country_honduras),
+        stringResource(R.string.country_nicaragua),
+        stringResource(R.string.country_guatemala),
+        stringResource(R.string.country_cuba),
+        stringResource(R.string.country_dominican_republic)
+        )
+
+
 
     // Ciudades principales de Colombia
     val ciudadesColombia = listOf(
@@ -114,17 +135,17 @@ fun ContactDataScreen() {
     ) {
 
         Text(
-            text = "Datos de Contacto",
+            text = stringResource(R.string.contact_data_title),
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 16.dp)
+            modifier = Modifier.padding(bottom = 1.dp , top = 20.dp)
         )
 
         // Campo Teléfono (Obligatorio)
         OutlinedTextField(
             value = telefono,
             onValueChange = { telefono = it },
-            label = { Text("*Teléfono") },
+            label = { Text(stringResource(R.string.phone_label)) },
             modifier = Modifier
                 .fillMaxWidth()
                 .focusRequester(telefonoFocusRequester),
@@ -144,7 +165,7 @@ fun ContactDataScreen() {
         OutlinedTextField(
             value = direccion,
             onValueChange = { direccion = it },
-            label = { Text("Dirección") },
+            label = { Text(stringResource(R.string.address_label)) },
             modifier = Modifier
                 .fillMaxWidth()
                 .focusRequester(direccionFocusRequester),
@@ -165,7 +186,7 @@ fun ContactDataScreen() {
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
-            label = { Text("*Email") },
+            label = { Text(stringResource(R.string.email_label)) },
             modifier = Modifier
                 .fillMaxWidth()
                 .focusRequester(emailFocusRequester),
@@ -184,7 +205,7 @@ fun ContactDataScreen() {
 
         // País (Autocomplete/Dropdown) - Obligatorio
         Text(
-            text = "*País",
+            text = stringResource(R.string.country_label),
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium
         )
@@ -200,7 +221,7 @@ fun ContactDataScreen() {
                     paisSeleccionado = it
                     expandedPais = it.isNotEmpty()
                 },
-                label = { Text("Seleccionar país") },
+                label = { Text(stringResource(R.string.select_country)) },
                 trailingIcon = {
                     ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedPais)
                 },
@@ -232,7 +253,7 @@ fun ContactDataScreen() {
 
         // Ciudad (Autocomplete/Dropdown)
         Text(
-            text = "Ciudad",
+            text = stringResource(R.string.city_label),
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium
         )
@@ -248,7 +269,7 @@ fun ContactDataScreen() {
                     ciudadSeleccionada = it
                     expandedCiudad = it.isNotEmpty()
                 },
-                label = { Text("Seleccionar ciudad") },
+                label = { Text(stringResource(R.string.select_city)) },
                 trailingIcon = {
                     ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedCiudad)
                 },
@@ -291,7 +312,7 @@ fun ContactDataScreen() {
             onClick = { validarYMostrarDatos() },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Siguiente")
+            Text(stringResource(R.string.next_button))
         }
 
         // Información para el desarrollador

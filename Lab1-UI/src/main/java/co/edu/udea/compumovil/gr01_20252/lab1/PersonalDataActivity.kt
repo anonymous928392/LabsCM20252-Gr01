@@ -6,10 +6,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -35,12 +38,12 @@ class PersonalDataActivity : ComponentActivity() {
 @Composable
 fun PersonalDataScreen() {
     // Estados para los campos
-    var nombres by remember { mutableStateOf("") }
-    var apellidos by remember { mutableStateOf("") }
-    var sexoSeleccionado by remember { mutableStateOf("") }
-    var fechaNacimiento by remember { mutableStateOf("") }
-    fechaNacimiento = stringResource(R.string.select_date)
-    var gradoEscolaridad by remember { mutableStateOf("") }
+    var nombres by rememberSaveable { mutableStateOf("") }
+    var apellidos by rememberSaveable { mutableStateOf("") }
+    var sexoSeleccionado by rememberSaveable { mutableStateOf("") }
+    val defaultFecha = stringResource(R.string.select_date)
+    var fechaNacimiento by rememberSaveable { mutableStateOf(defaultFecha) }
+    var gradoEscolaridad by rememberSaveable { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
 
 
@@ -77,8 +80,10 @@ fun PersonalDataScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(16.dp)
+
     ) {
 
         Text(

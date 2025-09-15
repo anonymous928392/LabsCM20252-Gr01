@@ -39,6 +39,25 @@
     <!-- Countries -->
 
     <string name="country_colombia">Colombia</string>
+    <string name="country_argentina">Argentina</string>
+    <string name="country_bolivia">Bolivia</string>
+    <string name="country_brasil">Brasil</string>
+    <string name="country_chile">Chile</string>
+    <string name="country_costa_rica">Costa Rica</string>
+    <string name="country_cuba">Cuba</string>
+    <string name="country_ecuador">Ecuador</string>
+    <string name="country_el_salvador">El Salvador</string>
+    <string name="country_guatemala">Guatemala</string>
+    <string name="country_honduras">Honduras</string>
+    <string name="country_mexico">México</string>
+    <string name="country_nicaragua">Nicaragua</string>
+    <string name="country_panama">Panamá</string>
+    <string name="country_paraguay">Paraguay</string>
+    <string name="country_peru">Perú</string>
+    <string name="country_dominican_republic">República Dominicana</string>
+    <string name="country_uruguay">Uruguay</string>
+    <string name="country_venezuela">Venezuela</string>
+
 
 
     <!-- Common -->
