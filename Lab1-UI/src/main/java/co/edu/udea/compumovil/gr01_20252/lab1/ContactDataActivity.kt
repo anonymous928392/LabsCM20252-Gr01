@@ -174,7 +174,7 @@ fun ContactDataScreen() {
         // Campo Teléfono (Obligatorio)
         OutlinedTextField(
             value = telefono,
-            onValueChange = { telefono = it },
+            onValueChange = { if (it.length <= 10) telefono = it },
             label = { Text(stringResource(R.string.phone_label)) },
             modifier = Modifier
                 .fillMaxWidth()
