@@ -16,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -48,6 +49,16 @@ fun PersonalDataScreen() {
     var expanded by remember { mutableStateOf(false) }
 
 
+    // Campos obligatorios de errores indiividuales
+    var nombresError by remember { mutableStateOf(false) }
+    var apellidosError by remember { mutableStateOf(false) }
+    var birthError by remember { mutableStateOf(false) }
+
+    // Lista de campos faltantes + control de diálogo
+    var missingFields by remember { mutableStateOf(listOf<String>()) }
+    var showMissingDialog by remember { mutableStateOf(false) }
+
+
     val opcionesSexo = listOf(stringResource(R.string.sex_male),
         stringResource(R.string.sex_female),
         stringResource(R.string.sex_other))
@@ -67,11 +78,16 @@ fun PersonalDataScreen() {
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
 
+    // Focus requesters para focusear el primer campo faltante
+    val nombresFocusRequester = remember { FocusRequester() }
+    val apellidosFocusRequester = remember { FocusRequester() }
+
     // DatePickerDialog
     val datePickerDialog = DatePickerDialog(
         context,
         { _, year, month, dayOfMonth ->
             fechaNacimiento = "$dayOfMonth/${month + 1}/$year"
+            birthError = false
         },
         calendar.get(Calendar.YEAR),
         calendar.get(Calendar.MONTH),
@@ -97,7 +113,10 @@ fun PersonalDataScreen() {
 
         OutlinedTextField(
             value = nombres,
-            onValueChange = { nombres = it },
+            onValueChange = {
+                nombres = it
+                nombresError = nombres.isBlank()
+                            },
             label = { Text(stringResource(R.string.names_label)) },
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(
@@ -105,13 +124,24 @@ fun PersonalDataScreen() {
                 capitalization = KeyboardCapitalization.Words,
                 autoCorrect = false
             ),
-            singleLine = true
+            singleLine = true ,
+            isError= nombresError
         )
 
+        if(nombresError){
+            Text(
+                text = stringResource(R.string.required_field_error),
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
 
+         // Campo apellidos
         OutlinedTextField(
             value = apellidos,
-            onValueChange = { apellidos = it },
+            onValueChange = {
+                apellidos = it
+                apellidosError = apellidos.isBlank()            },
             label = { Text(stringResource(R.string.surnames_label)) },
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(
@@ -119,8 +149,17 @@ fun PersonalDataScreen() {
                 capitalization = KeyboardCapitalization.Words,
                 autoCorrect = false
             ),
-            singleLine = true
+            singleLine = true,
+            isError= apellidosError
         )
+
+        if(apellidosError){
+            Text(
+                text = stringResource(R.string.required_field_error),
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
 
 
         Text(
@@ -165,6 +204,15 @@ fun PersonalDataScreen() {
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(text = fechaNacimiento)
+        }
+
+        if (birthError) {
+            Text(
+                text = stringResource(R.string.required_field_error),
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(top = 4.dp)
+            )
         }
 
 
@@ -213,15 +261,25 @@ fun PersonalDataScreen() {
 
         Button(
             onClick = {
-                if (nombres.isBlank()) {
+
+                val missing = mutableListOf<String>()
+
+
+                nombresError = nombres.isBlank()
+                if (nombresError) missing.add("Nombres")
+
+                apellidosError = apellidos.isBlank()
+                if (apellidosError) missing.add("Apellidos")
+
+                birthError = (fechaNacimiento == defaultFecha)
+                if (birthError) missing.add("Fecha de nacimiento")
+
+                if (missing.isNotEmpty()) {
+                    missingFields = missing
+                    showMissingDialog = true
                     return@Button
                 }
-                if (apellidos.isBlank()) {
-                    return@Button
-                }
-                if (fechaNacimiento == defaultFecha) { // Usa defaultFecha en lugar de hardcoded
-                    return@Button
-                }
+
 
                 // Log de información personal
                 Log.d("PersonalData", "=== INFORMACIÓN PERSONAL ===")
@@ -248,6 +306,8 @@ fun PersonalDataScreen() {
         ) {
             Text(text = stringResource(R.string.next_button))
         }
+
+
 
     }
 }

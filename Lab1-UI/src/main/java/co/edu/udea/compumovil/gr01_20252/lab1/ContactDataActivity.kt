@@ -14,6 +14,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -54,6 +55,7 @@ fun ContactDataScreen() {
 
 
 
+
     // Estados que se mantienen en cambios de configuración
     var telefono by rememberSaveable { mutableStateOf("") }
     var direccion by rememberSaveable { mutableStateOf("") }
@@ -64,6 +66,9 @@ fun ContactDataScreen() {
     // Estados para dropdowns
     var expandedPais by remember { mutableStateOf(false) }
     var expandedCiudad by remember { mutableStateOf(false) }
+
+    // Campos obligatios para el usuario o sino muestra advertencia
+    var telefonoError by remember { mutableStateOf(false) }
 
 
     val paisesLatam = listOf(
@@ -174,7 +179,11 @@ fun ContactDataScreen() {
         // Campo Teléfono (Obligatorio)
         OutlinedTextField(
             value = telefono,
-            onValueChange = { if (it.length <= 10) telefono = it },
+            onValueChange = {
+                val filtered = it.filter { char -> char.isDigit() }
+                if (filtered.length <= 10) telefono = filtered
+                telefonoError = telefono.isBlank()
+            },
             label = { Text(stringResource(R.string.phone_label)) },
             modifier = Modifier
                 .fillMaxWidth()
@@ -184,12 +193,21 @@ fun ContactDataScreen() {
                 imeAction = ImeAction.Next
             ),
             keyboardActions = KeyboardActions(
-                onNext = {
-                    direccionFocusRequester.requestFocus()
-                }
+                onNext = { direccionFocusRequester.requestFocus() }
             ),
-            singleLine = true
+            singleLine = true,
+            isError = telefonoError // resalta el TextField si hay error
         )
+
+// Mensaje de error debajo
+        if (telefonoError) {
+            Text(
+                text = "El teléfono es obligatorio",
+                color = Color.Red,
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
+
 
         // Campo Dirección
         OutlinedTextField(
