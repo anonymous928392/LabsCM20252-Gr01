@@ -3,6 +3,7 @@ package co.edu.udea.compumovil.gr01_20252.lab1
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -146,7 +147,7 @@ fun PersonalDataScreen() {
                     )
                     Text(
                         text = opcion,
-                        modifier = Modifier.padding(start = 8.dp)
+                        modifier = Modifier.padding(start = 5.dp)
                     )
                 }
             }
@@ -212,30 +213,45 @@ fun PersonalDataScreen() {
 
         Button(
             onClick = {
-
                 if (nombres.isBlank()) {
-
                     return@Button
                 }
                 if (apellidos.isBlank()) {
-
                     return@Button
                 }
-                if (fechaNacimiento == "Seleccionar fecha") {
-
+                if (fechaNacimiento == defaultFecha) { // Usa defaultFecha en lugar de hardcoded
                     return@Button
                 }
 
-                // Navegar a ContactDataActivity
+                // Log de información personal
+                Log.d("PersonalData", "=== INFORMACIÓN PERSONAL ===")
+                Log.d("PersonalData", "$nombres $apellidos")
+                if (sexoSeleccionado.isNotEmpty()) {
+                    Log.d("PersonalData", sexoSeleccionado)
+                }
+                Log.d("PersonalData", "Nació el $fechaNacimiento")
+                if (gradoEscolaridad.isNotEmpty()) {
+                    Log.d("PersonalData", gradoEscolaridad)
+                }
+                Log.d("PersonalData", "==============================")
+
+                // Pasar datos a ContactDataActivity
                 val intent = Intent(context, ContactDataActivity::class.java)
+                intent.putExtra("nombres", nombres)
+                intent.putExtra("apellidos", apellidos)
+                intent.putExtra("sexo", sexoSeleccionado)
+                intent.putExtra("fechaNacimiento", fechaNacimiento)
+                intent.putExtra("gradoEscolaridad", gradoEscolaridad)
                 context.startActivity(intent)
             },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(text = stringResource(R.string.next_button))
         }
+
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

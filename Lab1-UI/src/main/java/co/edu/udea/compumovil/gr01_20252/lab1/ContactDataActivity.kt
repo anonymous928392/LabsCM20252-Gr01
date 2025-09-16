@@ -8,15 +8,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -39,6 +38,22 @@ class ContactDataActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ContactDataScreen() {
+
+    val configuration = LocalConfiguration.current
+    val context = LocalContext.current
+    val activity = context as? ComponentActivity
+
+
+    // Recibir datos de PersonalDataActivity
+    val nombres = activity?.intent?.getStringExtra("nombres") ?: ""
+    val apellidos = activity?.intent?.getStringExtra("apellidos") ?: ""
+    val sexo = activity?.intent?.getStringExtra("sexo") ?: ""
+    val fechaNacimiento = activity?.intent?.getStringExtra("fechaNacimiento") ?: ""
+    val gradoEscolaridad = activity?.intent?.getStringExtra("gradoEscolaridad") ?: ""
+
+
+
+
     // Estados que se mantienen en cambios de configuración
     var telefono by rememberSaveable { mutableStateOf("") }
     var direccion by rememberSaveable { mutableStateOf("") }
@@ -112,18 +127,33 @@ fun ContactDataScreen() {
         }
 
         if (datosValidos) {
-            // Log de datos válidos
-            Log.d("ContactData", "=== DATOS DE CONTACTO ===")
-            Log.d("ContactData", "Teléfono: $telefono")
-            Log.d("ContactData", "Dirección: ${if (direccion.isBlank()) "No proporcionada" else direccion}")
-            Log.d("ContactData", "Email: $email")
-            Log.d("ContactData", "País: $paisSeleccionado")
-            Log.d("ContactData", "Ciudad: ${if (ciudadSeleccionada.isBlank()) "No proporcionada" else ciudadSeleccionada}")
-            Log.d("ContactData", "========================")
+            // Log COMPLETO - Personal + Contacto
+            Log.d("CompleteData", "=========================================")
+            Log.d("CompleteData", "**Información personal:**")
+            Log.d("CompleteData", "$nombres $apellidos")
+            if (sexo.isNotEmpty()) {
+                Log.d("CompleteData", sexo)
+            }
+            Log.d("CompleteData", "Nació el $fechaNacimiento")
+            if (gradoEscolaridad.isNotEmpty()) {
+                Log.d("CompleteData", gradoEscolaridad)
+            }
+            Log.d("CompleteData", "**Información de contacto:**")
+            Log.d("CompleteData", "Teléfono: $telefono")
+            if (direccion.isNotEmpty()) {
+                Log.d("CompleteData", "Dirección: $direccion")
+            }
+            Log.d("CompleteData", "Email: $email")
+            Log.d("CompleteData", "País: $paisSeleccionado")
+            if (ciudadSeleccionada.isNotEmpty()) {
+                Log.d("CompleteData", "Ciudad: $ciudadSeleccionada")
+            }
+            Log.d("CompleteData", "=========================================")
         } else {
             // Log de errores
             Log.w("ContactData", "Errores de validación: ${errores.joinToString(", ")}")
         }
+
     }
 
     Column(
