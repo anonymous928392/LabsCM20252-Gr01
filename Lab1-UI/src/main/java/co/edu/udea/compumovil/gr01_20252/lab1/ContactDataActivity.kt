@@ -69,6 +69,8 @@ fun ContactDataScreen() {
 
     // Campos obligatios para el usuario o sino muestra advertencia
     var telefonoError by remember { mutableStateOf(false) }
+    var emailError by remember { mutableStateOf(false) }
+    var paisError by remember { mutableStateOf(false) }
 
 
     val paisesLatam = listOf(
@@ -120,14 +122,17 @@ fun ContactDataScreen() {
         // Validar campos obligatorios
         if (telefono.isBlank()) {
             errores.add("Teléfono es obligatorio")
+            telefonoError = true
             datosValidos = false
         }
         if (email.isBlank()) {
             errores.add("Email es obligatorio")
+            emailError = true
             datosValidos = false
         }
         if (paisSeleccionado.isBlank()) {
             errores.add("País es obligatorio")
+            paisError = true
             datosValidos = false
         }
 
@@ -199,10 +204,9 @@ fun ContactDataScreen() {
             isError = telefonoError // resalta el TextField si hay error
         )
 
-// Mensaje de error debajo
         if (telefonoError) {
             Text(
-                text = "El teléfono es obligatorio",
+                text = stringResource(R.string.required_field_error),
                 color = Color.Red,
                 style = MaterialTheme.typography.bodySmall
             )
@@ -233,7 +237,9 @@ fun ContactDataScreen() {
         // Campo Email (Obligatorio)
         OutlinedTextField(
             value = email,
-            onValueChange = { email = it },
+            onValueChange = {
+                email = it
+                emailError = email.isBlank() },
             label = { Text(stringResource(R.string.email_label)) },
             modifier = Modifier
                 .fillMaxWidth()
@@ -248,8 +254,17 @@ fun ContactDataScreen() {
                     expandedPais = true
                 }
             ),
-            singleLine = true
+            singleLine = true,
+            isError = emailError
         )
+
+        if (emailError) {
+            Text(
+                text = stringResource(R.string.required_field_error),
+                color = Color.Red,
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
 
         // País (Autocomplete/Dropdown) - Obligatorio
         Text(
@@ -268,6 +283,7 @@ fun ContactDataScreen() {
                 onValueChange = {
                     paisSeleccionado = it
                     expandedPais = it.isNotEmpty()
+                    paisError = paisSeleccionado.isBlank()
                 },
                 label = { Text(stringResource(R.string.select_country)) },
                 trailingIcon = {
@@ -278,7 +294,8 @@ fun ContactDataScreen() {
                     .fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next
-                )
+                ),
+                isError = paisError
             )
 
             ExposedDropdownMenu(
@@ -293,10 +310,20 @@ fun ContactDataScreen() {
                         onClick = {
                             paisSeleccionado = pais
                             expandedPais = false
+                            paisError = false
                         }
                     )
                 }
             }
+        }
+
+        if (paisError) {
+            Text(
+                text = stringResource(R.string.required_field_error),
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(top = 4.dp)
+            )
         }
 
         // Ciudad (Autocomplete/Dropdown)
