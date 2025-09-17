@@ -44,17 +44,12 @@ fun ContactDataScreen() {
     val context = LocalContext.current
     val activity = context as? ComponentActivity
 
-
     // Recibir datos de PersonalDataActivity
     val nombres = activity?.intent?.getStringExtra("nombres") ?: ""
     val apellidos = activity?.intent?.getStringExtra("apellidos") ?: ""
     val sexo = activity?.intent?.getStringExtra("sexo") ?: ""
     val fechaNacimiento = activity?.intent?.getStringExtra("fechaNacimiento") ?: ""
     val gradoEscolaridad = activity?.intent?.getStringExtra("gradoEscolaridad") ?: ""
-
-
-
-
 
     // Estados que se mantienen en cambios de configuración
     var telefono by rememberSaveable { mutableStateOf("") }
@@ -67,11 +62,10 @@ fun ContactDataScreen() {
     var expandedPais by remember { mutableStateOf(false) }
     var expandedCiudad by remember { mutableStateOf(false) }
 
-    // Campos obligatios para el usuario o sino muestra advertencia
+    // Campos obligatorios para el usuario o sino muestra advertencia
     var telefonoError by remember { mutableStateOf(false) }
     var emailError by remember { mutableStateOf(false) }
     var paisError by remember { mutableStateOf(false) }
-
 
     val paisesLatam = listOf(
         stringResource(R.string.country_colombia),
@@ -93,9 +87,7 @@ fun ContactDataScreen() {
         stringResource(R.string.country_guatemala),
         stringResource(R.string.country_cuba),
         stringResource(R.string.country_dominican_republic)
-        )
-
-
+    )
 
     // Ciudades principales de Colombia
     val ciudadesColombia = listOf(
@@ -136,6 +128,14 @@ fun ContactDataScreen() {
             datosValidos = false
         }
 
+        if (!paisesLatam.any { it.equals(paisSeleccionado, ignoreCase = true) }) {
+            errores.add("País seleccionado no es válido")
+            paisError = true
+            datosValidos = false
+        }
+
+
+
         if (datosValidos) {
             // Log COMPLETO - Personal + Contacto
             Log.d("CompleteData", "=========================================")
@@ -163,7 +163,6 @@ fun ContactDataScreen() {
             // Log de errores
             Log.w("ContactData", "Errores de validación: ${errores.joinToString(", ")}")
         }
-
     }
 
     Column(
@@ -178,7 +177,7 @@ fun ContactDataScreen() {
             text = stringResource(R.string.contact_data_title),
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 1.dp , top = 20.dp)
+            modifier = Modifier.padding(bottom = 1.dp, top = 20.dp)
         )
 
         // Campo Teléfono (Obligatorio)
@@ -201,7 +200,7 @@ fun ContactDataScreen() {
                 onNext = { direccionFocusRequester.requestFocus() }
             ),
             singleLine = true,
-            isError = telefonoError // resalta el TextField si hay error
+            isError = telefonoError
         )
 
         if (telefonoError) {
@@ -211,7 +210,6 @@ fun ContactDataScreen() {
                 style = MaterialTheme.typography.bodySmall
             )
         }
-
 
         // Campo Dirección
         OutlinedTextField(
@@ -239,7 +237,8 @@ fun ContactDataScreen() {
             value = email,
             onValueChange = {
                 email = it
-                emailError = email.isBlank() },
+                emailError = email.isBlank()
+            },
             label = { Text(stringResource(R.string.email_label)) },
             modifier = Modifier
                 .fillMaxWidth()
@@ -275,15 +274,15 @@ fun ContactDataScreen() {
 
         ExposedDropdownMenuBox(
             expanded = expandedPais,
-            onExpandedChange = { expandedPais = !expandedPais },
+            onExpandedChange = { expandedPais = it },
             modifier = Modifier.fillMaxWidth()
         ) {
             OutlinedTextField(
                 value = paisSeleccionado,
-                onValueChange = {
-                    paisSeleccionado = it
-                    expandedPais = it.isNotEmpty()
-                    paisError = paisSeleccionado.isBlank()
+                onValueChange = { newValue ->
+                    paisSeleccionado = newValue
+                    expandedPais = true
+                    paisError = false // Reset error while typing
                 },
                 label = { Text(stringResource(R.string.select_country)) },
                 trailingIcon = {
@@ -292,27 +291,43 @@ fun ContactDataScreen() {
                 modifier = Modifier
                     .menuAnchor()
                     .fillMaxWidth(),
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next
-                ),
                 isError = paisError
             )
 
-            ExposedDropdownMenu(
-                expanded = expandedPais,
-                onDismissRequest = { expandedPais = false }
-            ) {
-                paisesLatam.filter {
-                    it.contains(paisSeleccionado, ignoreCase = true)
-                }.forEach { pais ->
-                    DropdownMenuItem(
-                        text = { Text(pais) },
-                        onClick = {
-                            paisSeleccionado = pais
-                            expandedPais = false
+            // Solo mostrar el dropdown si está expandido
+            if (expandedPais) {
+                val paisesFiltrados = if (paisSeleccionado.isBlank()) {
+                    paisesLatam
+                } else {
+                    paisesLatam.filter {
+                        it.contains(paisSeleccionado, ignoreCase = true)
+                    }
+                }
+
+                ExposedDropdownMenu(
+                    expanded = expandedPais && paisesFiltrados.isNotEmpty(),
+                    onDismissRequest = {
+                        expandedPais = false
+                        // Validar solo si hay texto y no coincide con ningún país exactamente
+                        if (paisSeleccionado.isNotBlank() &&
+                            !paisesLatam.any { it.equals(paisSeleccionado, ignoreCase = true) }
+                        ) {
+                            paisError = true
+                        } else {
                             paisError = false
                         }
-                    )
+                    }
+                ) {
+                    paisesFiltrados.forEach { pais ->
+                        DropdownMenuItem(
+                            text = { Text(pais) },
+                            onClick = {
+                                paisSeleccionado = pais
+                                expandedPais = false
+                                paisError = false
+                            }
+                        )
+                    }
                 }
             }
         }
@@ -326,7 +341,7 @@ fun ContactDataScreen() {
             )
         }
 
-        // Ciudad (Autocomplete/Dropdown)
+        // Ciudad (Autocomplete/Dropdown) - CORREGIDO IGUAL QUE PAÍS
         Text(
             text = stringResource(R.string.city_label),
             fontSize = 16.sp,
@@ -335,14 +350,14 @@ fun ContactDataScreen() {
 
         ExposedDropdownMenuBox(
             expanded = expandedCiudad,
-            onExpandedChange = { expandedCiudad = !expandedCiudad },
+            onExpandedChange = { expandedCiudad = it },
             modifier = Modifier.fillMaxWidth()
         ) {
             OutlinedTextField(
                 value = ciudadSeleccionada,
-                onValueChange = {
-                    ciudadSeleccionada = it
-                    expandedCiudad = it.isNotEmpty()
+                onValueChange = { newValue ->
+                    ciudadSeleccionada = newValue
+                    expandedCiudad = true
                 },
                 label = { Text(stringResource(R.string.select_city)) },
                 trailingIcon = {
@@ -362,20 +377,29 @@ fun ContactDataScreen() {
                 )
             )
 
-            ExposedDropdownMenu(
-                expanded = expandedCiudad,
-                onDismissRequest = { expandedCiudad = false }
-            ) {
-                ciudadesColombia.filter {
-                    it.contains(ciudadSeleccionada, ignoreCase = true)
-                }.forEach { ciudad ->
-                    DropdownMenuItem(
-                        text = { Text(ciudad) },
-                        onClick = {
-                            ciudadSeleccionada = ciudad
-                            expandedCiudad = false
-                        }
-                    )
+            // Solo mostrar el dropdown si está expandido
+            if (expandedCiudad) {
+                val ciudadesFiltradas = if (ciudadSeleccionada.isBlank()) {
+                    ciudadesColombia
+                } else {
+                    ciudadesColombia.filter {
+                        it.contains(ciudadSeleccionada, ignoreCase = true)
+                    }
+                }
+
+                ExposedDropdownMenu(
+                    expanded = expandedCiudad && ciudadesFiltradas.isNotEmpty(),
+                    onDismissRequest = { expandedCiudad = false }
+                ) {
+                    ciudadesFiltradas.forEach { ciudad ->
+                        DropdownMenuItem(
+                            text = { Text(ciudad) },
+                            onClick = {
+                                ciudadSeleccionada = ciudad
+                                expandedCiudad = false
+                            }
+                        )
+                    }
                 }
             }
         }
@@ -399,8 +423,6 @@ fun ContactDataScreen() {
         )
     }
 }
-
-
 
 @Preview(showBackground = true)
 @Composable
