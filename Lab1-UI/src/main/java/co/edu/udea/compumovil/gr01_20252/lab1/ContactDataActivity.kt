@@ -30,6 +30,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import android.util.Patterns
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.material3.Icon
+import androidx.compose.ui.window.Dialog
 
 class ContactDataActivity : ComponentActivity() {
     private val viewModel: ContactDataViewModel by viewModels()
@@ -73,6 +78,7 @@ fun ContactDataScreen(viewModel: ContactDataViewModel? = null) {
     var emailRequiredError by remember { mutableStateOf(false) }
     var emailFormatError by remember { mutableStateOf(false) }
     var paisError by remember { mutableStateOf(false) }
+    var showSuccessDialog by remember { mutableStateOf(false) }
 
     // Estados del ViewModel
     val countries by viewModel?.countries?.collectAsState() ?: remember { mutableStateOf(emptyList<Country>()) }
@@ -163,9 +169,58 @@ fun ContactDataScreen(viewModel: ContactDataViewModel? = null) {
                 Log.d("CompleteData", "Ciudad: $ciudadSeleccionada")
             }
             Log.d("CompleteData", "=========================================")
+
+
+            showSuccessDialog = true
         } else {
             // Log de errores
             Log.w("ContactData", "Errores de validación: ${errores.joinToString(", ")}")
+        }
+    }
+
+    if (showSuccessDialog) {
+        Dialog(onDismissRequest = { showSuccessDialog = false }) {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    // Icono de check (puedes usar un icono de Material Design)
+                    Icon(
+                        imageVector = Icons.Default.CheckCircle,
+                        contentDescription = "Éxito",
+                        tint = Color.Green,
+                        modifier = Modifier.size(48.dp)
+                    )
+
+                    Text(
+                        text = stringResource(R.string.data_stored_message_title),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center
+                    )
+
+                    Text(
+                        text = stringResource(R.string.data_stored_message_description),
+                        fontSize = 14.sp,
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+
+                    Button(
+                        onClick = { showSuccessDialog = false },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(stringResource(R.string.data_stored_message_button))
+                    }
+                }
+            }
         }
     }
 
@@ -502,7 +557,7 @@ fun ContactDataScreen(viewModel: ContactDataViewModel? = null) {
 
         // Información para el desarrollador
         Text(
-            text = "Nota: Los datos se muestran en Logcat cuando presionas 'Siguiente'. Los países y ciudades se cargan desde la API.",
+            text = stringResource(R.string.logcat_note),
             fontSize = 12.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(top = 8.dp)

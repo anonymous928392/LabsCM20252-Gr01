@@ -38,18 +38,25 @@
 
     <!-- Countries -->
     <string name="country_not_selected">Country not selected</string>
-    <string name="cities_empty">No cities available for this country</string>">
+    <string name="cities_empty">No cities available for this country</string>>
 
 
 
 
     <!-- Common -->
     <string name="next_button">Next</string>
-    <string name="logcat_note">Note: Data is shown in Logcat when you press \'Next\'</string>
+    <string name="logcat_note">Note: Data is shown in Logcat when you press \'Next\'. Countries and cities are loaded automatically from the API</string>
 
     <!-- Validation messages -->
     <string name="required_field_error">This field is required</string>
     <string name="missing_fields_error">Please complete the following fields:</string>">
     <string name="validation_error">Please complete all required fields</string>
     <string name="validation_email_error">Enter a valid email</string>">
+
+    <!-- Data stored message -->
+    <string name="data_stored_message_title">¡Data stored successfully!</string>
+    <string name="data_stored_message_description">Data has been stored successfully. You can see the summary in the Logcat.</string>">
+    <string name="data_stored_message_button">Accept</string>
+
+
 </resources>

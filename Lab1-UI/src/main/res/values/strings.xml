@@ -36,19 +36,28 @@
     <string name="select_country">Seleccionar país</string>
     <string name="select_city">Seleccionar ciudad</string>
 
-    <!-- Countries -->
+    <!-- Countries and cities -->
     <string name="country_not_selected">País no seleccionado</string>
-    <string name="cities_empty">No hay ciudades disponibles para este país</string>">
+    <string name="cities_empty">No hay ciudades disponibles para este país</string>>
 
 
 
     <!-- Common -->
     <string name="next_button">Siguiente</string>
-    <string name="logcat_note">Nota: Los datos se muestran en Logcat cuando presionas \'Siguiente\'</string>
+    <string name="logcat_note">Nota: Los datos se muestran en Logcat cuando presionas \'Siguiente\. Los paises y ciudades se cargan automaticamente desde la API</string>
 
     <!-- Validation messages -->
     <string name="required_field_error">Este campo es obligatorio</string>
     <string name="missing_fields_error">Por favor completa los siguientes campos:</string>">
     <string name="validation_error">Por favor completa todos los campos obligatorios</string>
     <string name="validation_email_error">Ingresa un email válido</string>">
+
+
+    <!-- Data stored message -->
+    <string name="data_stored_message_title">¡Datos guardados correctamente!</string>
+    <string name="data_stored_message_description">Los datos se han guardado correctamente. Puedes ver el resumen en la consola (Logcat).</string>">
+    <string name="data_stored_message_button">Aceptar</string>
+
+
+
 </resources>

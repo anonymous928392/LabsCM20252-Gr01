@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Données personnelles</string>
+
+    <!-- PersonalDataActivity -->
+    <string name="personal_data_title">Données personnelles</string>
+    <string name="names_label">*Prénoms</string>
+    <string name="surnames_label">*Noms</string>
+    <string name="sex_label">Sexe</string>
+    <string name="sex_male">Homme</string>
+    <string name="sex_female">Femme</string>
+    <string name="sex_other">Autre</string>
+    <string name="birth_date_label">*Date de naissance</string>
+    <string name="select_date">Sélectionner une date</string>
+    <string name="education_level_label">Niveau d'études</string>
+    <string name="select_education">Sélectionner un niveau</string>
+
+    <!-- Education levels -->
+    <string name="education_primary">École primaire</string>
+    <string name="education_secondary">Collège</string>
+    <string name="education_high_school">Lycée</string>
+    <string name="education_technical">Technique</string>
+    <string name="education_technological">Technologique</string>
+    <string name="education_university">Université</string>
+    <string name="education_specialization">Spécialisation</string>
+    <string name="education_masters">Master</string>
+    <string name="education_doctorate">Doctorat</string>
+
+    <!-- ContactDataActivity -->
+    <string name="contact_data_title">Données de contact</string>
+    <string name="phone_label">*Téléphone</string>
+    <string name="address_label">Adresse</string>
+    <string name="email_label">*E-mail</string>
+    <string name="country_label">*Pays</string>
+    <string name="city_label">Ville</string>
+    <string name="select_country">Sélectionner un pays</string>
+    <string name="select_city">Sélectionner une ville</string>
+
+    <!-- Countries -->
+    <string name="country_not_selected">Aucun pays sélectionné</string>
+    <string name="cities_empty">Aucune ville disponible pour ce pays</string>
+
+    <!-- Common -->
+    <string name="next_button">Suivant</string>
+    <string name="logcat_note">Remarque : Les données s\'affichent dans Logcat lorsque vous appuyez sur « Suivant ». Les pays et villes sont chargés automatiquement depuis l'API.</string>
+
+    <!-- Validation messages -->
+    <string name="required_field_error">Ce champ est obligatoire</string>
+    <string name="missing_fields_error">Veuillez compléter les champs suivants :</string>
+    <string name="validation_error">Veuillez compléter tous les champs obligatoires</string>
+    <string name="validation_email_error">Entrez une adresse e-mail valide</string>
+
+    <!-- Data stored message -->
+    <string name="data_stored_message_title">Données enregistrées avec succès !</string>
+    <string name="data_stored_message_description">Les données ont été enregistrées avec succès. Vous pouvez voir le résumé dans Logcat.</string>
+    <string name="data_stored_message_button">Accepter</string>
+</resources>
