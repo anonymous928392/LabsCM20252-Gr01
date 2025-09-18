@@ -29,6 +29,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import android.util.Patterns
 
 class ContactDataActivity : ComponentActivity() {
     private val viewModel: ContactDataViewModel by viewModels()
@@ -69,7 +70,8 @@ fun ContactDataScreen(viewModel: ContactDataViewModel? = null) {
 
     // Campos obligatorios para el usuario o sino muestra advertencia
     var telefonoError by remember { mutableStateOf(false) }
-    var emailError by remember { mutableStateOf(false) }
+    var emailRequiredError by remember { mutableStateOf(false) }
+    var emailFormatError by remember { mutableStateOf(false) }
     var paisError by remember { mutableStateOf(false) }
 
     // Estados del ViewModel
@@ -78,6 +80,7 @@ fun ContactDataScreen(viewModel: ContactDataViewModel? = null) {
     val isLoadingCountries by viewModel?.isLoadingCountries?.collectAsState() ?: remember { mutableStateOf(false) }
     val isLoadingCities by viewModel?.isLoadingCities?.collectAsState() ?: remember { mutableStateOf(false) }
     val errorMessage by viewModel?.errorMessage?.collectAsState() ?: remember { mutableStateOf<String?>(null) }
+
 
     // Focus management
     val focusManager = LocalFocusManager.current
@@ -96,6 +99,11 @@ fun ContactDataScreen(viewModel: ContactDataViewModel? = null) {
         }
     }
 
+    fun isValidEmail(email: String): Boolean {
+        // true si coincide con el patrón de email estándar de Android
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
     // Función de validación y logging
     fun validarYMostrarDatos() {
         var datosValidos = true
@@ -107,11 +115,25 @@ fun ContactDataScreen(viewModel: ContactDataViewModel? = null) {
             telefonoError = true
             datosValidos = false
         }
-        if (email.isBlank()) {
-            errores.add("Email es obligatorio")
-            emailError = true
-            datosValidos = false
+        when {
+            email.isBlank() -> {
+                errores.add("Email es obligatorio")
+                emailRequiredError = true
+                emailFormatError = false
+                datosValidos = false
+            }
+            !isValidEmail(email) -> {
+                errores.add("Email no es válido")
+                emailRequiredError = false
+                emailFormatError = true
+                datosValidos = false
+            }
+            else -> {
+                emailRequiredError = false
+                emailFormatError = false
+            }
         }
+
         if (paisSeleccionado.isBlank()) {
             errores.add("País es obligatorio")
             paisError = true
@@ -240,9 +262,22 @@ fun ContactDataScreen(viewModel: ContactDataViewModel? = null) {
         // Campo Email (Obligatorio)
         OutlinedTextField(
             value = email,
-            onValueChange = {
-                email = it
-                emailError = email.isBlank()
+            onValueChange = { newValue ->
+                email = newValue
+                when {
+                    newValue.isBlank() -> {
+                        emailRequiredError = true
+                        emailFormatError = false
+                    }
+                    !isValidEmail(newValue) -> {
+                        emailRequiredError = false
+                        emailFormatError = true
+                    }
+                    else -> {
+                        emailRequiredError = false
+                        emailFormatError = false
+                    }
+                }
             },
             label = { Text(stringResource(R.string.email_label)) },
             modifier = Modifier
@@ -259,12 +294,18 @@ fun ContactDataScreen(viewModel: ContactDataViewModel? = null) {
                 }
             ),
             singleLine = true,
-            isError = emailError
+            isError = emailRequiredError || emailFormatError
         )
 
-        if (emailError) {
+
+        if (emailRequiredError || emailFormatError) {
+            val message = when {
+                emailRequiredError -> stringResource(R.string.required_field_error)
+                emailFormatError -> stringResource(R.string.validation_email_error)
+                else -> stringResource(R.string.required_field_error)
+            }
             Text(
-                text = stringResource(R.string.required_field_error),
+                text = message,
                 color = Color.Red,
                 style = MaterialTheme.typography.bodySmall
             )
@@ -396,8 +437,8 @@ fun ContactDataScreen(viewModel: ContactDataViewModel? = null) {
                 },
                 label = {
                     Text(
-                        if (paisSeleccionadoIso.isEmpty()) "Primero selecciona un país"
-                        else if (cities.isEmpty() && !isLoadingCities) "No hay ciudades disponibles"
+                        if (paisSeleccionadoIso.isEmpty()) stringResource(R.string.country_not_selected)
+                        else if (cities.isEmpty() && !isLoadingCities) stringResource(R.string.cities_empty)
                         else stringResource(R.string.select_city)
                     )
                 },

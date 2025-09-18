@@ -37,26 +37,8 @@
     <string name="select_city">Seleccionar ciudad</string>
 
     <!-- Countries -->
-
-    <string name="country_colombia">Colombia</string>
-    <string name="country_argentina">Argentina</string>
-    <string name="country_bolivia">Bolivia</string>
-    <string name="country_brasil">Brasil</string>
-    <string name="country_chile">Chile</string>
-    <string name="country_costa_rica">Costa Rica</string>
-    <string name="country_cuba">Cuba</string>
-    <string name="country_ecuador">Ecuador</string>
-    <string name="country_el_salvador">El Salvador</string>
-    <string name="country_guatemala">Guatemala</string>
-    <string name="country_honduras">Honduras</string>
-    <string name="country_mexico">México</string>
-    <string name="country_nicaragua">Nicaragua</string>
-    <string name="country_panama">Panamá</string>
-    <string name="country_paraguay">Paraguay</string>
-    <string name="country_peru">Perú</string>
-    <string name="country_dominican_republic">República Dominicana</string>
-    <string name="country_uruguay">Uruguay</string>
-    <string name="country_venezuela">Venezuela</string>
+    <string name="country_not_selected">País no seleccionado</string>
+    <string name="cities_empty">No hay ciudades disponibles para este país</string>">
 
 
 
@@ -68,4 +50,5 @@
     <string name="required_field_error">Este campo es obligatorio</string>
     <string name="missing_fields_error">Por favor completa los siguientes campos:</string>">
     <string name="validation_error">Por favor completa todos los campos obligatorios</string>
+    <string name="validation_email_error">Ingresa un email válido</string>">
 </resources>
