@@ -350,7 +350,7 @@ fun PersonalDataScreen() {
             }
         }
     } else {
-        // LAYOUT PORTRAIT: UNA COLUMNA (tu código original)
+        // LAYOUT PORTRAIT: UNA COLUMNA
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -554,15 +554,12 @@ fun PersonalDataScreen() {
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        text = stringResource(R.string.required_field_error),
+                        text = stringResource(R.string.missing_fields_error),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
                     )
 
-                    Text(
-                        text = stringResource(R.string.required_field_error),
-                        fontSize = 14.sp
-                    )
+
 
                     missingFields.forEach { field ->
                         Text(

@@ -66,5 +66,6 @@
 
     <!-- Validation messages -->
     <string name="required_field_error">Este campo es obligatorio</string>
+    <string name="missing_fields_error">Por favor completa los siguientes campos:</string>">
     <string name="validation_error">Por favor completa todos los campos obligatorios</string>
 </resources>
