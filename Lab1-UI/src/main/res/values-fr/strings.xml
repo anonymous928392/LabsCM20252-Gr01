@@ -12,7 +12,7 @@
     <string name="sex_other">Autre</string>
     <string name="birth_date_label">*Date de naissance</string>
     <string name="select_date">Sélectionner une date</string>
-    <string name="education_level_label">Niveau d'études</string>
+    <string name="education_level_label">Niveau d\'études</string>
     <string name="select_education">Sélectionner un niveau</string>
 
     <!-- Education levels -->
@@ -42,7 +42,7 @@
 
     <!-- Common -->
     <string name="next_button">Suivant</string>
-    <string name="logcat_note">Remarque : Les données s\'affichent dans Logcat lorsque vous appuyez sur « Suivant ». Les pays et villes sont chargés automatiquement depuis l'API.</string>
+    <string name="logcat_note">Remarque : Les données s\'affichent dans Logcat lorsque vous appuyez sur \"Suivant\". Les pays et villes sont chargés automatiquement depuis l\'API.</string>
 
     <!-- Validation messages -->
     <string name="required_field_error">Ce champ est obligatoire</string>
