@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Datos Personales</string>
+    <string name="app_name">UI App</string>
 
     <!-- PersonalDataActivity -->
     <string name="personal_data_title">Datos Personales</string>

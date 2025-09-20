@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.KeyboardActions
@@ -34,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import java.util.*
+import androidx.compose.foundation.layout.navigationBarsPadding
 
 class PersonalDataActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -145,7 +147,7 @@ fun PersonalDataScreen() {
     }
 
     if (isLandscape) {
-        // LAYOUT LANDSCAPE: DOS COLUMNAS
+        // LAYOUT LANDSCAPE
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -157,7 +159,7 @@ fun PersonalDataScreen() {
                 text = stringResource(R.string.personal_data_title),
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 16.dp)
+                modifier = Modifier.padding(bottom = 16.dp , top = 16.dp)
             )
 
             Row(
@@ -200,38 +202,6 @@ fun PersonalDataScreen() {
                             style = MaterialTheme.typography.bodySmall
                         )
                     }
-
-                    // Sexo
-                    Text(
-                        text = stringResource(R.string.sex_label),
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium
-                    )
-
-                    Column {
-                        opcionesSexo.forEach { opcion ->
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .selectable(
-                                        selected = (sexoSeleccionado == opcion),
-                                        onClick = { sexoSeleccionado = opcion }
-                                    )
-                                    .padding(horizontal = 8.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                RadioButton(
-                                    selected = (sexoSeleccionado == opcion),
-                                    onClick = { sexoSeleccionado = opcion }
-                                )
-                                Text(
-                                    text = opcion,
-                                    modifier = Modifier.padding(start = 5.dp),
-                                    fontSize = 14.sp
-                                )
-                            }
-                        }
-                    }
                 }
 
                 // COLUMNA DERECHA
@@ -273,34 +243,95 @@ fun PersonalDataScreen() {
                             style = MaterialTheme.typography.bodySmall
                         )
                     }
+                }
+            }
 
-                    // Fecha de nacimiento
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Sexo - centrado con opciones en la misma fila
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = stringResource(R.string.sex_label),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    opcionesSexo.forEach { opcion ->
+                        Row(
+                            modifier = Modifier
+                                .selectable(
+                                    selected = (sexoSeleccionado == opcion),
+                                    onClick = { sexoSeleccionado = opcion }
+                                ),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            RadioButton(
+                                selected = (sexoSeleccionado == opcion),
+                                onClick = { sexoSeleccionado = opcion }
+                            )
+                            Text(
+                                text = opcion,
+                                modifier = Modifier.padding(start = 4.dp),
+                                fontSize = 12.sp
+                            )
+                        }
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Fecha de nacimiento - centrado
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = stringResource(R.string.birth_date_label),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium
+                )
+
+                Button(
+                    onClick = { datePickerDialog.show() },
+                    modifier = Modifier.fillMaxWidth(0.3f)
+                ) {
+                    Text(text = fechaNacimiento, fontSize = 14.sp)
+                }
+
+                if (birthError) {
                     Text(
-                        text = stringResource(R.string.birth_date_label),
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium
+                        text = stringResource(R.string.required_field_error),
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall
                     )
+                }
+            }
 
-                    Button(
-                        onClick = { datePickerDialog.show() },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(text = fechaNacimiento, fontSize = 14.sp)
-                    }
+            Spacer(modifier = Modifier.height(16.dp))
 
-                    if (birthError) {
-                        Text(
-                            text = stringResource(R.string.required_field_error),
-                            color = MaterialTheme.colorScheme.error,
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                    }
-
-                    // Grado de escolaridad
+            // Grado de escolaridad
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Start
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxWidth(0.5f)
+                ) {
                     Text(
                         text = stringResource(R.string.select_education),
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier.padding(bottom = 8.dp)
                     )
 
                     ExposedDropdownMenuBox(
@@ -342,13 +373,25 @@ fun PersonalDataScreen() {
             Spacer(modifier = Modifier.height(24.dp))
 
             // Botón Siguiente
-            Button(
-                onClick = { validarYContinuar() },
-                modifier = Modifier.fillMaxWidth()
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
             ) {
-                Text(text = stringResource(R.string.next_button))
+
+                Button(
+                    onClick = { validarYContinuar() },
+                    modifier = Modifier.fillMaxWidth(0.3f)
+
+
+                ) {
+                    Text(text = stringResource(R.string.next_button))
+                }
+
             }
         }
+
+
     } else {
         // LAYOUT PORTRAIT: UNA COLUMNA
         Column(
@@ -533,7 +576,9 @@ fun PersonalDataScreen() {
             // Botón Siguiente
             Button(
                 onClick = { validarYContinuar() },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .navigationBarsPadding()
             ) {
                 Text(text = stringResource(R.string.next_button))
             }
@@ -558,8 +603,6 @@ fun PersonalDataScreen() {
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
                     )
-
-
 
                     missingFields.forEach { field ->
                         Text(

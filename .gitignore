@@ -32,3 +32,8 @@ build/
 
 # Archivos locales
 local.properties
+
+# Ignorar APKs generados
+release/
+*.apk
+*.aab
